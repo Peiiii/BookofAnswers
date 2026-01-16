@@ -7,12 +7,6 @@ import Drawer from './components/Drawer';
 import { HomeView } from './components/HomeView';
 import { LoadingView } from './components/LoadingView';
 
-const RECOMMENDATIONS = [
-  { label: '今日运势', query: '我今天的整体运势如何？给出一些生活的指引。' },
-  { label: '职业迷茫', query: '面对职业发展的十字路口，我该坚持现状还是寻找突破？' },
-  { label: '内在宁静', query: '最近思绪纷乱，请给我一些关于如何保持内心平静的智慧。' },
-];
-
 const App: React.FC = () => {
   const {
     state,
@@ -23,6 +17,9 @@ const App: React.FC = () => {
     setActiveTemplate,
     isDrawerOpen,
     setIsDrawerOpen,
+    recommendations,
+    isRefreshingRecs,
+    refreshRecommendations,
     handleAsk,
     handleReset
   } = useAnswerBook();
@@ -55,7 +52,9 @@ const App: React.FC = () => {
           question={question} 
           setQuestion={setQuestion} 
           onAsk={handleAsk} 
-          recommendations={RECOMMENDATIONS} 
+          recommendations={recommendations}
+          isRefreshing={isRefreshingRecs}
+          onRefresh={refreshRecommendations}
         />
       )}
 

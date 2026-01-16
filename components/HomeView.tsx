@@ -1,7 +1,7 @@
 
 import React from 'react';
 
-interface Recommendation {
+export interface Recommendation {
   label: string;
   query: string;
 }
@@ -11,9 +11,18 @@ interface Props {
   setQuestion: (val: string) => void;
   onAsk: (query?: string) => void;
   recommendations: Recommendation[];
+  isRefreshing: boolean;
+  onRefresh: () => void;
 }
 
-export const HomeView: React.FC<Props> = ({ question, setQuestion, onAsk, recommendations }) => {
+export const HomeView: React.FC<Props> = ({ 
+  question, 
+  setQuestion, 
+  onAsk, 
+  recommendations,
+  isRefreshing,
+  onRefresh
+}) => {
   return (
     <div className="max-w-md mx-auto h-full flex flex-col items-center pt-20 px-6 pb-10 overflow-y-auto w-full">
       <div className="group relative mb-8 shrink-0">
@@ -49,20 +58,38 @@ export const HomeView: React.FC<Props> = ({ question, setQuestion, onAsk, recomm
         </div>
 
         <div className="space-y-4">
-          <div className="flex items-center space-x-2 px-1">
-            <span className="text-[9px] text-gray-300 font-black tracking-widest uppercase">启发灵感</span>
-            <div className="h-[1px] flex-1 bg-gray-100"></div>
+          <div className="flex items-center justify-between px-1">
+            <div className="flex items-center space-x-2 flex-1">
+              <span className="text-[9px] text-gray-300 font-black tracking-widest uppercase">启发灵感</span>
+              <div className="h-[1px] flex-1 bg-gray-100"></div>
+            </div>
+            <button 
+              onClick={onRefresh}
+              disabled={isRefreshing}
+              className="ml-4 flex items-center space-x-1 group active:scale-95 transition-all disabled:opacity-50"
+            >
+              <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                className={`h-3 w-3 text-gray-300 group-hover:text-[#8cc63f] transition-colors ${isRefreshing ? 'animate-spin' : ''}`}
+                fill="none" 
+                viewBox="0 0 24 24" 
+                stroke="currentColor"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
+              <span className="text-[9px] text-gray-300 font-bold tracking-widest group-hover:text-[#8cc63f] transition-colors">换一换</span>
+            </button>
           </div>
           
-          <div className="grid grid-cols-1 gap-2">
+          <div className={`grid grid-cols-1 gap-2 transition-all duration-500 ${isRefreshing ? 'opacity-40 blur-[2px]' : 'opacity-100 blur-0'}`}>
             {recommendations.map((rec, idx) => (
               <button
                 key={idx}
                 onClick={() => onAsk(rec.query)}
-                className="bg-white/70 active:bg-white border border-gray-50 py-4 px-5 rounded-xl text-[12px] text-gray-600 font-semibold transition-all text-left flex items-center justify-between"
+                className="bg-white/70 active:bg-white border border-gray-50 py-4 px-5 rounded-xl text-[12px] text-gray-600 font-semibold transition-all text-left flex items-center justify-between hover:shadow-md hover:border-[#8cc63f]/10"
               >
-                <span>{rec.label}</span>
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-[#8cc63f]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <span className="truncate pr-4">{rec.label}</span>
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-[#8cc63f] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
                 </svg>
               </button>

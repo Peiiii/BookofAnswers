@@ -2,25 +2,31 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { AnswerData } from "../types";
 
+export interface Recommendation {
+  label: string;
+  query: string;
+}
+
+const MODEL_NAME = 'gemini-3-flash-preview';
+
 export const generateAnswer = async (question: string): Promise<AnswerData> => {
   const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
   
   const response = await ai.models.generateContent({
-    model: 'gemini-3-flash-preview',
-    contents: `你现在是《答案之书》的智慧内核。用户正在寻求关于“${question}”的指引。
-    请生成一个符合“一格 (One Cup)”设计风格的、充满哲思、极简且平衡的回复。
-    
-    输出要求：
-    1. title: 一个有力、简洁的4-6字中文词组，作为核心建议（如：顺其自然、破茧成蝶、持盈履满）。
-    2. subtitle: 标题的诗意英文翻译，全大写。
-    3. category: 建议所属的生命维度（如：自我成长、时空秩序、情感共振）。
-    4. subheading: 核心对比的导言（如：关于“进”与“退”的艺术）。
-    5. subheadingEn: 导言的英文翻译。
-    6. tableHeaderA: '知者' (The Wise)。
-    7. tableHeaderB: '行者' (The Doer)。
-    8. comparison: 4组维度对比。维度应该是抽象的（如：节奏、心态、目光），对比项应该是富有智慧的短句。
-    9. conclusion: 一句充满力量的“金句”总结（15-25字），能够引发深思。
-    10. conclusionEn: 金句的英文诗意翻译。`,
+    model: MODEL_NAME,
+    contents: `你是一位冷静、理性的生活导师。用户提问：“${question}”。
+    请基于心理学和现实逻辑，提供一份“一格 (One Cup)”风格的实用指南。
+
+    要求：
+    1. 拒绝玄学：不要提命运、星辰或虚无，要提方法论、心态建设和具体行动。
+    2. title: 4-6字建议，如“建立边界”、“先易后难”、“控制损耗”。
+    3. subtitle: 建议的英文，全大写。
+    4. category: 现实维度（职场、金钱、社交、健康）。
+    5. subheading: 问题的理性本质拆解。
+    6. tableHeaderA: '感性直觉' (Emotion)。
+    7. tableHeaderB: '理性对策' (Logic)。
+    8. comparison: 4组维度的对比。维度要具体（如：沟通方式、资源分配、情绪处理）。
+    9. conclusion: 一句扎实、有力量的生活金句。`,
     config: {
       responseMimeType: "application/json",
       responseSchema: {
@@ -53,5 +59,36 @@ export const generateAnswer = async (question: string): Promise<AnswerData> => {
     }
   });
 
+  return JSON.parse(response.text.trim());
+};
+
+export const generateRecommendations = async (): Promise<Recommendation[]> => {
+  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+  const response = await ai.models.generateContent({
+    model: MODEL_NAME,
+    contents: `请批量生成3个普通人日常生活中最常遇到的、具体的烦恼或选择题。
+    
+    选题范围：工作汇报压力、拒绝同事、存不下钱、熬夜难以改变、感情中的小摩擦。
+    
+    格式：
+    - label: 4字标签（如：拒绝技巧、金钱管理、作息调整）。
+    - query: 一个具体的场景化提问（如：面对总是推卸责任的同事，我该如何体面地拒绝额外工作？）。
+    
+    注意：语境要真实，不要玄乎，一次性返回3条数据。`,
+    config: {
+      responseMimeType: "application/json",
+      responseSchema: {
+        type: Type.ARRAY,
+        items: {
+          type: Type.OBJECT,
+          properties: {
+            label: { type: Type.STRING },
+            query: { type: Type.STRING }
+          },
+          required: ["label", "query"]
+        }
+      }
+    }
+  });
   return JSON.parse(response.text.trim());
 };

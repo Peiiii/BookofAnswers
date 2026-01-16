@@ -9,8 +9,8 @@ export const LoadingView: React.FC = () => {
          <div className="absolute inset-0 w-20 h-20 border-[3px] border-[#8cc63f] rounded-full border-t-transparent animate-spin"></div>
       </div>
       <div className="text-center">
-        <h3 className="text-gray-800 font-black text-xl font-serif-sc">正在解析心流...</h3>
-        <p className="text-gray-400 text-[8px] tracking-[0.3em] uppercase mt-1 opacity-50">Resonating...</p>
+        <h3 className="text-gray-800 font-black text-xl font-serif-sc">正在进行理性拆解...</h3>
+        <p className="text-gray-400 text-[8px] tracking-[0.3em] uppercase mt-1 opacity-50">Analyzing Logic...</p>
       </div>
     </div>
   );
