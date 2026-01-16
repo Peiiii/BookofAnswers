@@ -1,0 +1,7 @@
+{
+  "name": "Book of Answers - One Cup Style",
+  "description": "A minimalist, aesthetically pleasing 'Book of Answers' web app inspired by the 'One Cup' design system. Ask a question and receive beautifully formatted life advice cards.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
