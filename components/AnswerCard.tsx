@@ -9,58 +9,76 @@ interface Props {
 }
 
 const AnswerCard: React.FC<Props> = ({ data, onReset, templateId }) => {
-  // 1. ZEN STYLE (OPTIMIZED FOR ONE SCREEN)
+  // 1. RE-OPTIMIZED ZEN STYLE (禅意留白)
   if (templateId === 'zen') {
     return (
-      <div className="max-w-md w-full bg-[#f9f6f1] h-screen flex flex-col p-6 mx-auto animate-in fade-in duration-700 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/handmade-paper.png')]"></div>
-        <div className="absolute left-6 top-0 bottom-0 w-[1px] bg-stone-200"></div>
+      <div className="max-w-md w-full bg-[#fcfaf7] h-screen flex flex-col p-8 mx-auto animate-in fade-in duration-1000 relative overflow-hidden font-serif-sc select-none">
+        {/* Paper Texture Overlay */}
+        <div className="absolute inset-0 opacity-[0.04] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/natural-paper.png')]"></div>
+        
+        {/* Subtle Zen Circle (Enso) Background */}
+        <div className="absolute -right-20 top-20 w-80 h-80 border border-stone-100 rounded-full pointer-events-none opacity-50"></div>
 
-        <div className="flex justify-between items-start mt-6 relative z-10">
-          <div className="flex flex-col">
-            <h1 className="text-4xl text-stone-800 font-serif-sc font-black leading-none mb-3 writing-mode-vertical">
+        {/* Header Label */}
+        <div className="relative z-10 flex justify-between items-center mb-10">
+          <div className="text-[9px] text-stone-300 tracking-[0.6em] uppercase border-b border-stone-200 pb-1">
+            {data.category}
+          </div>
+          <div className="w-6 h-6 border border-red-800/30 flex items-center justify-center text-red-800/40 text-[6px] font-bold leading-none rotate-3">
+            壹<br/>格
+          </div>
+        </div>
+
+        {/* Main Composition: Vertical Title & Comparisons */}
+        <div className="flex flex-1 items-start justify-between relative z-10 mt-4">
+          {/* Left: Prominent Vertical Title */}
+          <div className="flex flex-col items-center">
+            <h1 className="text-5xl text-stone-800 font-black leading-[1.15] [writing-mode:vertical-rl] tracking-tighter">
               {data.title}
             </h1>
-            <div className="w-0.5 h-8 bg-stone-800 mt-2"></div>
+            <div className="w-[1px] h-16 bg-gradient-to-b from-stone-800 to-transparent mt-6 opacity-80"></div>
           </div>
-          
-          <div className="flex flex-col items-end">
-            <p className="text-stone-400 text-[9px] tracking-[0.4em] uppercase [writing-mode:vertical-rl] font-light py-2 border-r border-stone-200">
-              {data.subtitle}
-            </p>
-            <div className="mt-4 w-8 h-8 border border-red-800 flex items-center justify-center text-red-800 font-serif-sc text-[8px] font-black leading-none p-1">
-              答案<br/>一格
-            </div>
-          </div>
-        </div>
 
-        <div className="mt-12 space-y-8 relative z-10 flex-grow">
-          {data.comparison.slice(0, 3).map((row, idx) => (
-            <div key={idx} className="flex flex-col items-center">
-              <span className="text-stone-300 text-[7px] mb-2 tracking-[0.5em] uppercase font-bold">{row.dimension}</span>
-              <div className="flex items-center justify-center w-full px-4">
-                <div className="text-stone-600 text-xs font-serif-sc tracking-widest text-right w-[42%]">{row.optionA}</div>
-                <div className="mx-3 w-1 h-1 rounded-full bg-stone-300"></div>
-                <div className="text-stone-400 text-xs font-serif-sc tracking-widest text-left w-[42%] italic">{row.optionB}</div>
+          {/* Right: Poetic Comparisons */}
+          <div className="flex-1 ml-12 py-4 flex flex-col justify-center space-y-10">
+            {data.comparison.slice(0, 3).map((row, idx) => (
+              <div key={idx} className="flex flex-col space-y-2 border-l border-stone-100 pl-4 relative">
+                <div className="absolute -left-[3px] top-0 w-1.5 h-1.5 rounded-full bg-stone-200"></div>
+                <div className="text-[8px] text-stone-300 tracking-[0.3em] uppercase font-sans font-bold">
+                  {row.dimension}
+                </div>
+                <div className="flex flex-col space-y-1.5">
+                  <div className="text-stone-700 text-sm tracking-widest font-medium leading-snug">
+                    {row.optionA}
+                  </div>
+                  <div className="text-stone-400 text-xs italic tracking-wide leading-snug font-light">
+                    {row.optionB}
+                  </div>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
 
-        <div className="mt-auto pb-6 flex flex-col items-center relative z-10">
-          <div className="max-w-[220px] text-center mb-8">
-            <p className="text-stone-700 text-base leading-relaxed font-serif-sc italic mb-3">
+        {/* Footer: Conclusion & Action */}
+        <div className="mt-auto pt-10 pb-4 relative z-10 flex flex-col items-center">
+          <div className="max-w-[240px] text-center mb-12 relative">
+             {/* Large faint quote mark */}
+            <span className="absolute -top-10 left-1/2 -translate-x-1/2 text-stone-100 text-8xl font-serif pointer-events-none opacity-40">“</span>
+            <p className="text-stone-600 text-lg leading-loose font-serif-sc italic relative z-10">
               {data.conclusion}
             </p>
-            <p className="text-stone-400 text-[8px] uppercase tracking-[0.3em] opacity-60">
+            <p className="text-stone-300 text-[8px] uppercase tracking-[0.4em] mt-4 font-sans opacity-60">
               {data.conclusionEn}
             </p>
           </div>
+          
           <button 
             onClick={onReset}
-            className="text-stone-300 hover:text-stone-800 text-[9px] tracking-[0.5em] uppercase transition-colors border-b border-stone-200 pb-0.5"
+            className="group flex flex-col items-center space-y-2 text-stone-300 hover:text-stone-500 transition-colors font-sans"
           >
-            Return to Void
+            <div className="w-10 h-[1px] bg-stone-200 group-hover:w-16 transition-all"></div>
+            <span className="text-[9px] tracking-[0.5em] uppercase">Return to Center</span>
           </button>
         </div>
       </div>
