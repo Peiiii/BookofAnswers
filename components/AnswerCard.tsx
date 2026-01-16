@@ -9,49 +9,60 @@ interface Props {
 }
 
 const AnswerCard: React.FC<Props> = ({ data, onReset, templateId }) => {
-  // 1. RE-OPTIMIZED ZEN STYLE (禅意留白)
+  // 1. ZEN STYLE (深度优化版：禅意留白)
   if (templateId === 'zen') {
     return (
-      <div className="max-w-md w-full bg-[#fcfaf7] h-screen flex flex-col p-8 mx-auto animate-in fade-in duration-1000 relative overflow-hidden font-serif-sc select-none">
-        {/* Paper Texture Overlay */}
-        <div className="absolute inset-0 opacity-[0.04] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/natural-paper.png')]"></div>
+      <div className="max-w-md w-full bg-[#F9F6F1] h-screen flex flex-col p-10 mx-auto relative overflow-hidden font-serif-sc select-none ink-bleed">
+        {/* 高级纸张肌理叠加 */}
+        <div className="absolute inset-0 opacity-[0.06] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/natural-paper.png')]"></div>
         
-        {/* Subtle Zen Circle (Enso) Background */}
-        <div className="absolute -right-20 top-20 w-80 h-80 border border-stone-100 rounded-full pointer-events-none opacity-50"></div>
+        {/* 背景隐喻：远山墨痕 (极为淡雅的装饰) */}
+        <div className="absolute bottom-0 left-0 w-full h-1/3 bg-gradient-to-t from-stone-200/20 to-transparent pointer-events-none"></div>
 
-        {/* Header Label */}
-        <div className="relative z-10 flex justify-between items-center mb-10">
-          <div className="text-[9px] text-stone-300 tracking-[0.6em] uppercase border-b border-stone-200 pb-1">
-            {data.category}
+        {/* 顶部页眉：维度标签与朱砂印章 */}
+        <div className="relative z-10 flex justify-between items-start mb-16">
+          <div className="flex flex-col">
+            <span className="text-[10px] text-stone-400 tracking-[0.8em] uppercase mb-1">{data.category}</span>
+            <div className="w-8 h-[1px] bg-stone-300"></div>
           </div>
-          <div className="w-6 h-6 border border-red-800/30 flex items-center justify-center text-red-800/40 text-[6px] font-bold leading-none rotate-3">
-            壹<br/>格
+          {/* 朱砂印章组件 */}
+          <div className="flex flex-col items-center">
+            <div className="w-8 h-8 border-2 border-red-700/60 flex items-center justify-center p-1 rotate-2">
+              <span className="text-red-800 text-[10px] font-black leading-none text-center">
+                壹<br/>格
+              </span>
+            </div>
+            <span className="text-[7px] text-red-800/40 font-sans font-bold mt-1 tracking-tighter">WISDOM</span>
           </div>
         </div>
 
-        {/* Main Composition: Vertical Title & Comparisons */}
-        <div className="flex flex-1 items-start justify-between relative z-10 mt-4">
-          {/* Left: Prominent Vertical Title */}
-          <div className="flex flex-col items-center">
-            <h1 className="text-5xl text-stone-800 font-black leading-[1.15] [writing-mode:vertical-rl] tracking-tighter">
+        {/* 主体部分：竖排标题与禅意对话 */}
+        <div className="flex flex-row-reverse flex-1 items-start justify-between relative z-10">
+          
+          {/* 右侧：极简竖排标题 (核心点) */}
+          <div className="flex flex-col items-center ml-4">
+            <h1 className="text-5xl text-stone-800 font-bold leading-[1.2] [writing-mode:vertical-rl] tracking-[0.2em] py-2">
               {data.title}
             </h1>
-            <div className="w-[1px] h-16 bg-gradient-to-b from-stone-800 to-transparent mt-6 opacity-80"></div>
+            <div className="flex flex-col items-center mt-6 space-y-2 opacity-30">
+               <div className="w-1 h-1 bg-stone-800 rounded-full"></div>
+               <div className="w-[1px] h-12 bg-stone-800"></div>
+            </div>
           </div>
 
-          {/* Right: Poetic Comparisons */}
-          <div className="flex-1 ml-12 py-4 flex flex-col justify-center space-y-10">
+          {/* 左侧：对比指引 (犹如古籍侧注) */}
+          <div className="flex-1 pr-8 flex flex-col justify-start space-y-12 mt-4">
             {data.comparison.slice(0, 3).map((row, idx) => (
-              <div key={idx} className="flex flex-col space-y-2 border-l border-stone-100 pl-4 relative">
-                <div className="absolute -left-[3px] top-0 w-1.5 h-1.5 rounded-full bg-stone-200"></div>
-                <div className="text-[8px] text-stone-300 tracking-[0.3em] uppercase font-sans font-bold">
-                  {row.dimension}
+              <div key={idx} className="group flex flex-col space-y-3">
+                <div className="flex items-center space-x-2">
+                   <span className="text-[8px] text-stone-300 font-sans font-black tracking-widest uppercase">0{idx + 1}</span>
+                   <span className="text-[9px] text-stone-400 tracking-[0.3em]">{row.dimension}</span>
                 </div>
-                <div className="flex flex-col space-y-1.5">
-                  <div className="text-stone-700 text-sm tracking-widest font-medium leading-snug">
+                <div className="space-y-2 pl-4 border-l border-stone-200/50 group-hover:border-stone-400 transition-colors">
+                  <div className="text-stone-700 text-[13px] tracking-widest leading-relaxed">
                     {row.optionA}
                   </div>
-                  <div className="text-stone-400 text-xs italic tracking-wide leading-snug font-light">
+                  <div className="text-stone-400 text-[11px] italic tracking-wide font-light">
                     {row.optionB}
                   </div>
                 </div>
@@ -60,35 +71,43 @@ const AnswerCard: React.FC<Props> = ({ data, onReset, templateId }) => {
           </div>
         </div>
 
-        {/* Footer: Conclusion & Action */}
-        <div className="mt-auto pt-10 pb-4 relative z-10 flex flex-col items-center">
-          <div className="max-w-[240px] text-center mb-12 relative">
-             {/* Large faint quote mark */}
-            <span className="absolute -top-10 left-1/2 -translate-x-1/2 text-stone-100 text-8xl font-serif pointer-events-none opacity-40">“</span>
-            <p className="text-stone-600 text-lg leading-loose font-serif-sc italic relative z-10">
-              {data.conclusion}
-            </p>
-            <p className="text-stone-300 text-[8px] uppercase tracking-[0.4em] mt-4 font-sans opacity-60">
+        {/* 底部：智慧金句 (画面视觉重心) */}
+        <div className="mt-auto pt-12 pb-2 relative z-10">
+          <div className="flex flex-col items-center text-center">
+            <div className="relative mb-8">
+              {/* 引号装饰 */}
+              <span className="absolute -top-8 -left-4 text-stone-200 text-6xl font-serif opacity-50">“</span>
+              <p className="text-stone-600 text-[17px] leading-loose max-w-[280px] font-serif-sc px-4">
+                {data.conclusion}
+              </p>
+              <span className="absolute -bottom-10 -right-4 text-stone-200 text-6xl font-serif opacity-50 rotate-180">“</span>
+            </div>
+            
+            <div className="text-[8px] text-stone-300 uppercase tracking-[0.5em] mb-10 opacity-60">
               {data.conclusionEn}
-            </p>
+            </div>
+
+            <button 
+              onClick={onReset}
+              className="group relative flex flex-col items-center"
+            >
+              <div className="text-[9px] text-stone-400 tracking-[0.8em] uppercase mb-3 group-hover:text-stone-600 transition-colors">
+                归于寂静
+              </div>
+              <div className="relative w-16 h-[1px] bg-stone-200 overflow-hidden">
+                <div className="absolute inset-0 bg-stone-800 translate-x-[-100%] group-hover:translate-x-[0%] transition-transform duration-500"></div>
+              </div>
+            </button>
           </div>
-          
-          <button 
-            onClick={onReset}
-            className="group flex flex-col items-center space-y-2 text-stone-300 hover:text-stone-500 transition-colors font-sans"
-          >
-            <div className="w-10 h-[1px] bg-stone-200 group-hover:w-16 transition-all"></div>
-            <span className="text-[9px] tracking-[0.5em] uppercase">Return to Center</span>
-          </button>
         </div>
       </div>
     );
   }
 
-  // 2. COSMIC STYLE (COMPACT)
+  // 2. COSMIC STYLE
   if (templateId === 'cosmic') {
     return (
-      <div className="max-w-md w-full bg-[#0b0c10] h-screen flex flex-col items-center p-6 mx-auto animate-in zoom-in-95 duration-500 text-white overflow-hidden relative">
+      <div className="max-w-md w-full bg-[#0b0c10] h-screen flex flex-col items-center p-6 mx-auto animate-in zoom-in-95 duration-500 text-white overflow-hidden relative font-sans">
         <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_10%,_rgba(34,211,238,0.15),transparent_60%)] pointer-events-none"></div>
         
         <div className="relative mt-8 mb-8 text-center">
@@ -130,10 +149,10 @@ const AnswerCard: React.FC<Props> = ({ data, onReset, templateId }) => {
     );
   }
 
-  // 3. BAUHAUS (COMPACT)
+  // 3. BAUHAUS
   if (templateId === 'bauhaus') {
     return (
-      <div className="max-w-md w-full bg-white h-screen flex flex-col p-0 mx-auto border-x border-black overflow-hidden">
+      <div className="max-w-md w-full bg-white h-screen flex flex-col p-0 mx-auto border-x border-black overflow-hidden font-sans">
         <div className="bg-[#e74c3c] p-6 border-b-2 border-black">
           <div className="flex justify-between items-start mb-6">
             <div className="bg-black text-white px-2 py-0.5 font-black text-[10px]">MODERN</div>
@@ -193,9 +212,9 @@ const AnswerCard: React.FC<Props> = ({ data, onReset, templateId }) => {
     );
   }
 
-  // 4. CLASSIC STYLE (OPTIMIZED ONE PAGE)
+  // 4. CLASSIC STYLE (ONE CUP)
   return (
-    <div className="max-w-md w-full bg-[#f3f5f8] h-screen flex flex-col items-center p-4 mx-auto animate-in fade-in slide-in-from-bottom-6 duration-700 overflow-hidden">
+    <div className="max-w-md w-full bg-[#f3f5f8] h-screen flex flex-col items-center p-4 mx-auto animate-in fade-in slide-in-from-bottom-6 duration-700 overflow-hidden font-sans">
       <div className="w-full bg-[#8cc63f] rounded-[1.5rem] p-6 shadow-lg relative overflow-hidden shrink-0">
         <div className="absolute -top-10 -right-10 w-24 h-24 bg-white/10 rounded-full blur-xl"></div>
         <div className="mb-4 flex justify-between items-start">
